@@ -1,6 +1,5 @@
 import 'calendar_page.dart';
 import 'package:flutter/material.dart';
-import 'package:iconamoon/iconamoon.dart';
 import 'main.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,6 +10,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late TextEditingController _searchController;
+  late List<Event> _filteredEvents;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    _filteredEvents = events;
+  }
+
+  void _filterEvents(String query) {
+    setState(() {
+      _filteredEvents = events
+          .where((event) =>
+              event.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,13 +93,16 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 30),
                       TextField(
+                        controller: _searchController,
+                        onChanged: _filterEvents,
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                             isDense: true,
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
-                            prefixIcon: const Icon(IconaMoon.search),
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide.none),
+                            prefixIcon: const Icon(Icons.search),
                             hintText: "Cari Event di Sekitarmu..."),
                       )
                     ],
@@ -129,9 +155,9 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(top: 20),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: events.length,
+                      itemCount: _filteredEvents.length,
                       itemBuilder: (context, index) {
-                        Event event = events[index];
+                        Event event = _filteredEvents[index];
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => EventPage(event: event)));
@@ -259,9 +285,9 @@ class _HomePageState extends State<HomePage> {
                           crossAxisCount: 2, childAspectRatio: 0.575, crossAxisSpacing: 15, mainAxisSpacing: 15),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: events.length,
+                      itemCount: _filteredEvents.length,
                       itemBuilder: (context, index) {
-                        Event event = events[index];
+                        Event event = _filteredEvents[index];
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => EventPage(event: event)));
