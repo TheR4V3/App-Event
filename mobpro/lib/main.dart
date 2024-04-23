@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobpro/calendar_page.dart';
 import 'home_page.dart';
 import 'package:intl/intl.dart';
 
@@ -639,6 +640,60 @@ class _UploadPageState extends State<UploadPage> {
           return _buildListItem(index);
         },
       ),
+            floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddUploadEvent()),
+          );
+        },
+        backgroundColor: Colors.red,
+        child: Icon(Icons.add, color: Colors.white),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+              icon: Icon(Icons.home),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                );
+              },
+              icon: Icon(Icons.calendar_month),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddressPage()),
+                );
+              },
+              icon: Icon(Icons.map_outlined),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReviewPage()),
+                );
+              },
+              icon: Icon(Icons.star),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
